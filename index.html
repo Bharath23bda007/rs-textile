@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textile Stock Manager</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Background Elements -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <!-- Login Section -->
+    <div id="login-section" class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card glass-card text-center login-card fade-in">
+            <div class="mb-4">
+                <div class="icon-circle mb-3">
+                    <i class="fa-solid fa-layer-group fa-3x text-white"></i>
+                </div>
+                <h2 class="mb-4 fw-bold text-white text-glow">RS Textile</h2>
+                <p class="text-white-50">Stock Management System</p>
+            </div>
+            <form id="login-form">
+                <div class="mb-3 input-group glass-input-group">
+                    <span class="input-group-text glass-icon"><i class="fa-solid fa-user"></i></span>
+                    <input type="text" id="login-id" class="form-control glass-input" placeholder="Admin ID" required>
+                </div>
+                <div class="mb-4 input-group glass-input-group">
+                    <span class="input-group-text glass-icon"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" id="login-pass" class="form-control glass-input" placeholder="Password"
+                        required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 glass-btn">Login <i
+                        class="fa-solid fa-arrow-right ms-2"></i></button>
+            </form>
+            <div id="login-error" class="mt-3 text-danger fw-bold d-none">Invalid Credentials!</div>
+        </div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div id="sidebar" class="sidebar d-none">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-bolt text-warning me-2"></i>
+            <span>RS Textile</span>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="nav-item active" data-section="dashboard-section">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </li>
+            <li class="nav-item" data-section="stock-section">
+                <i class="fa-solid fa-boxes-stacked"></i> Inventory
+            </li>
+            <li class="nav-item" data-section="sales-section">
+                <i class="fa-solid fa-cart-shopping"></i> Sales
+            </li>
+            <li class="nav-item" data-section="ai-advisor-section">
+                <i class="fa-solid fa-robot"></i> RK ai assistant
+            </li>
+            <li class="nav-item" data-section="logs-section">
+                <i class="fa-solid fa-list-ul"></i> Activity Logs
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <button class="btn btn-outline-light w-100 glass-btn-sm" id="logout-btn">
+                <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div id="main-content" class="main-content d-none">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="content-section fade-in">
+            <div class="container-fluid px-4 pt-4">
+                <!-- Smart Alert Banner -->
+                <div id="smart-alert-container" class="alert glass-card mb-4 border-0 py-3 d-flex align-items-center"
+                    style="background: rgba(255,193,7,0.1); color: #ffc107;">
+                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Initializing RK Smart Monitor...
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="text-white fw-bold">Business Overview</h2>
+                    <div id="current-date-time" class="text-white-50"></div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card glass-card h-100 fade-in">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Total Stock (KG)</h6>
+                                    <h3 class="text-white fw-bold mb-0" id="total-stock-count">0</h3>
+                                </div>
+                                <div class="icon-box bg-primary-gradient text-white">
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card glass-card h-100 fade-in">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Total Sales</h6>
+                                    <h3 class="text-white fw-bold mb-0" id="total-sales-value">₹0</h3>
+                                </div>
+                                <div class="icon-box bg-success-gradient text-white">
+                                    <i class="fa-solid fa-sack-dollar"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card glass-card h-100 fade-in">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Net Profit</h6>
+                                    <h3 class="text-white fw-bold mb-0" id="total-profit-value">₹0</h3>
+                                </div>
+                                <div class="icon-box bg-info-gradient text-white">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card glass-card h-100 fade-in">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Low Stock Alerts</h6>
+                                    <h3 class="text-white fw-bold mb-0" id="low-stock-count">0</h3>
+                                </div>
+                                <div class="icon-box bg-warning-gradient text-white">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="card glass-card h-100">
+                            <h5 class="text-white mb-4">Stock Value Trend</h5>
+                            <canvas id="stockChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card glass-card h-100">
+                            <h5 class="text-white mb-4">Recent Activity</h5>
+                            <div id="recent-logs-list" class="activity-list small custom-scrollbar"
+                                style="max-height: 300px;">
+                                <!-- Activity items will be loaded here -->
+                                <p class="text-white-50">No recent activity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Section -->
+        <div id="stock-section" class="content-section d-none fade-in">
+            <div class="container-fluid px-4 pt-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="text-white fw-bold">Inventory Management</h2>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="card glass-card mb-4">
+                            <h5 class="text-white mb-3"><i class="fa-solid fa-plus-circle me-2"></i>Add / Update Stock
+                            </h5>
+                            <form id="stock-form">
+                                <input type="hidden" id="stock-id">
+                                <div class="mb-3">
+                                    <label class="text-white-50 small">Fabric Type</label>
+                                    <select id="fabric-type" class="form-select glass-input text-white" required>
+                                        <option value="" disabled selected>Select Type</option>
+                                        <option value="Cotton">Cotton</option>
+                                        <option value="Silk">Silk</option>
+                                        <option value="Wool">Wool</option>
+                                        <option value="Linen">Linen</option>
+                                        <option value="Polyester">Polyester</option>
+                                        <option value="Velvet">Velvet</option>
+                                        <option value="Rayon">Rayon</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-white-50 small">Color Name</label>
+                                    <input type="text" id="fabric-color-name" class="form-control glass-input"
+                                        placeholder="e.g. Navy Blue" list="color-suggestions" required>
+                                    <datalist id="color-suggestions">
+                                        <option value="Red">
+                                        <option value="Blue">
+                                        <option value="Green">
+                                        <option value="Yellow">
+                                        <option value="Black">
+                                        <option value="White">
+                                        <option value="Navy">
+                                        <option value="Maroon">
+                                        <option value="Pink">
+                                    </datalist>
+                                </div>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <label class="text-white-50 small">Quantity (KG)</label>
+                                        <input type="number" id="fabric-qty" class="form-control glass-input" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="text-white-50 small">Price per Item</label>
+                                        <input type="number" id="fabric-price" class="form-control glass-input"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-white-50 small">Purchase Date</label>
+                                    <input type="date" id="fabric-date" class="form-control glass-input" required>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-success glass-btn" id="save-btn">Save
+                                        Stock</button>
+                                    <button type="button" class="btn btn-secondary glass-btn d-none"
+                                        id="cancel-btn">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card glass-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <h5 class="text-white mb-0"><i class="fa-solid fa-list me-2"></i>Inventory List</h5>
+                                <div class="d-flex gap-2">
+                                    <input type="text" id="filter-search"
+                                        class="form-control glass-input glass-input-sm" placeholder="Search..."
+                                        style="width: 150px;">
+                                    <button class="btn btn-success glass-btn-sm" id="export-btn" title="Export to CSV">
+                                        <i class="fa-solid fa-file-csv"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-responsive custom-scrollbar">
+                                <table class="table table-hover table-dark table-transparent align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Type</th>
+                                            <th>Color</th>
+                                            <th>Status</th>
+                                            <th>Qty (KG)</th>
+                                            <th>Price</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stock-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Section -->
+        <div id="sales-section" class="content-section d-none fade-in">
+            <div class="container-fluid px-4 pt-4">
+                <h2 class="text-white fw-bold mb-4">Sales Management</h2>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="card glass-card">
+                            <h5 class="text-white mb-3">Record New Sale</h5>
+                            <form id="sales-form">
+                                <div class="mb-3">
+                                    <label class="text-white-50 small">Select Item from Stock</label>
+                                    <select id="sale-stock-item" class="form-select glass-input text-white" required>
+                                        <option value="" disabled selected>Loading stock...</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-white-50 small">Quantity Sold (KG)</label>
+                                    <input type="number" id="sale-qty" class="form-control glass-input" required>
+                                    <small id="available-qty-msg" class="text-info"></small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-white-50 small">Selling Price per KG</label>
+                                    <input type="number" id="sale-price" class="form-control glass-input" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-white-50 small">Sale Date</label>
+                                    <input type="date" id="sale-date" class="form-control glass-input" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary glass-btn w-100">Complete Sale</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card glass-card">
+                            <h5 class="text-white mb-4">Sales History</h5>
+                            <div class="table-responsive custom-scrollbar">
+                                <table class="table table-hover table-dark table-transparent align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Item Type</th>
+                                            <th>Qty</th>
+                                            <th>Sold Price</th>
+                                            <th>Total</th>
+                                            <th>Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sales-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Advisor Section -->
+        <div id="ai-advisor-section" class="content-section d-none fade-in">
+            <div class="container-fluid px-4 pt-4">
+                <h2 class="text-white fw-bold mb-4">RK ai assistant powered by RK Transportations</h2>
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="card glass-card mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-white mb-0">AI Insights & Forecasting</h5>
+                                <button id="generate-ai-insight" class="btn btn-warning glass-btn-sm">
+                                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Insights
+                                </button>
+                            </div>
+                            <div id="ai-insight-content" class="ai-chat-box p-3 rounded custom-scrollbar"
+                                style="min-height: 200px; background: rgba(0,0,0,0.2);">
+                                <p class="text-white-50">Click the button to let RK ai assistant analyze your business
+                                    status.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card glass-card">
+                            <h5 class="text-white mb-3">Ask RK ai assistant Anything</h5>
+                            <div class="input-group mb-3">
+                                <input type="text" id="ai-user-query" class="form-control glass-input"
+                                    placeholder="e.g. Which fabric is selling fastest?">
+                                <button class="btn btn-primary glass-btn" id="ask-ai-btn">Ask</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card glass-card">
+                            <h5 class="text-white mb-3">RK Predictions</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-3 p-3 rounded" style="background: rgba(255,255,255,0.05);">
+                                    <small class="text-warning">Demand Forecast</small>
+                                    <p class="mb-0">Cotton demand likely to increase by 15% next week.</p>
+                                </li>
+                                <li class="p-3 rounded" style="background: rgba(255,255,255,0.05);">
+                                    <small class="text-info">Optimal Pricing</small>
+                                    <p class="mb-0">Suggesting ₹550/KG for Silk based on market trends.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div id="logs-section" class="content-section d-none fade-in">
+            <div class="container-fluid px-4 pt-4">
+                <h2 class="text-white fw-bold mb-4">Activity Logs</h2>
+                <div class="card glass-card">
+                    <div class="table-responsive custom-scrollbar">
+                        <table class="table table-hover table-dark table-transparent align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                    <th>Category</th>
+                                    <th>Details</th>
+                                    <th>User</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activity-logs-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- App Logic -->
+    <script type="module" src="ai_service.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
